@@ -13,8 +13,19 @@ import shlex
 from urllib.parse import quote as urlquote
 from recoll import recoll, rclextract, rclconfig
 
+"""
+bottle.server_names = {
+    'wsgiref': bottle.WSGIRefServer,
+    #'waitress': bottle.WaitressServer,
+    #'auto': bottle.AutoServer,
+}
+"""
+
+
 def msg(s):
-    print("%s" % s, file=sys.stderr)
+    # FIXME logging
+    #print("%s" % s, file=sys.stderr)
+    print("%s" % s)
 
 # use ujson if avalaible (faster than built in json)
 try:
@@ -196,7 +207,7 @@ def get_config():
     for d in config['dirs']:
         name = 'mount_%s' % urlquote(d,'')
         config['mounts'][d] = select([bottle.request.get_cookie(name),
-                                      rclconf.getConfParam(f"webui_mount_{d}"),
+                                      rclconf.getConfParam(f"webui_mount_{d}"),  # f-strings python 3.something
                                       f"file://{d}"],
                                      [None, ''])
 
@@ -351,6 +362,7 @@ def recoll_search(q):
     offset = (q['page'] - 1) * config['perpage']
 
     if query.rowcount > 0:
+        #import pdb; pdb.set_trace()
         if type(query.next) == int:
             query.next = offset
         else:
@@ -368,11 +380,13 @@ def recoll_search(q):
             # Python Database API Specification
             if not doc:
                 break
-        except:
+        except Exception as ex:  # FIXED nappy pattern, there is no error reporting going on here
+            msg("Query fetchone failed: %s" % ex)
             break
         d = {}
         for f in FIELDS:
-            v = getattr(doc, f)
+            #v = getattr(doc, f)
+            v = getattr(doc, f, None)
             if v is not None:
                 d[f] = v
             else:
@@ -389,6 +403,7 @@ def recoll_search(q):
                 try:
                     d['snippet'] = doc['abstract']
                 except:
+                    print('DEBUG no snippet available')
                     pass
         #for n,v in d.items():
         #    print("type(%s) is %s" % (n,type(v)))
