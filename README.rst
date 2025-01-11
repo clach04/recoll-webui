@@ -2,6 +2,29 @@
 Recoll WebUI
 ============
 
+This is a hack of recollwebui, to not require/use recoll.
+
+To get started (assuming hard coded paths):
+
+    mkdir C:\code\recoll\recoll-webui_old\fakerecoll_data\examples
+
+edit C:\code\recoll\recoll-webui_old\fakerecoll_data\examples\recoll.conf
+
+    # https://www.recoll.org/manpages/recoll.conf.5.html
+
+    topdirs = C:\code\puren_tonbo\puren_tonbo\tests\demo_notes\
+    # test file C:\code\puren_tonbo\puren_tonbo\tests\demo_notes\todo.txt
+    # search for "create"
+
+Then issue:
+
+    set RECOLL_DATADIR=C:\code\recoll\recoll-webui_old\fakerecoll_data
+    py -3 webui-standalone.py
+
+TODO replace hard search results with sqlite FTS5, etc.
+
+-----------
+
 This (https://framagit.org/medoc92/recollwebui) is an updated clone of
 Koniu's original version on GitHub (https://github.com/koniu/recoll-webui),
 which has not been updated lately, and is now slightly obsolete. If you are currently
