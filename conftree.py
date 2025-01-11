@@ -27,7 +27,9 @@ import shlex
 
 
 def _debug(s):
-    print("%s" % s, file=sys.stderr)
+    # FIXME logging
+    #print("%s" % s, file=sys.stderr)
+    print("%s" % s)
 
 
 class ConfSimple(object):
