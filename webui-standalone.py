@@ -19,6 +19,7 @@ if os.path.dirname(__file__) != "":
 
 # set up webui and run in own http server
 webui.bottle.debug(True)
-webui.bottle.run(server='waitress', host=args.addr, port=args.port)
+#webui.bottle.run(server='waitress', host=args.addr, port=args.port)
+webui.bottle.run(host=args.addr, port=args.port)
 
 # vim: foldmethod=marker:filetype=python:textwidth=80:ts=4:et
